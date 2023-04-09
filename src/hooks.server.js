@@ -1,8 +1,13 @@
 import PocketBase from 'pocketbase'
+import dotenv from 'dotenv'
 import { serializeNonPOJOs } from './lib/utils'
 
 export const handle = async ({ event, resolve }) => {
-	event.locals.pb = new PocketBase('http://194.163.157.230:8090');
+
+	dotenv.config()
+	let { URL } = process.env
+
+	event.locals.pb = new PocketBase(URL);
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
 	if (event.locals.pb.authStore.isValid) {
